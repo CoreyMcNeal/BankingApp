@@ -12,6 +12,8 @@ public class BankGUI implements ActionListener {
     private JFrame frame;
     private BankHandler bankHandler;
 
+    //Add code for infoPanel
+
     private JPanel loginPanel;
     private GridBagConstraints loginConstraints;
 
@@ -21,6 +23,20 @@ public class BankGUI implements ActionListener {
     private JLabel loginPasswordLabel;
     private JPasswordField loginPasswordEntry;
     private JButton loginConnectButton;
+
+    private JPanel infoPanel;
+    private GridBagConstraints infoConstraints;
+
+    private JLabel infoWelcomeUser;
+    private JLabel infoCheckingLabel;
+    private JLabel infoCheckingAmountLabel;
+    private JLabel infoSavingsLabel;
+    private JLabel infoSavingsAmountLabel;
+    private JTextField infoWithdrawEntry;
+    private JButton infoWithdrawButton;
+    private JTextField infoDepositEntry;
+    private JButton infoDepositButton;
+    private JButton infoExitButton;
 
 
     public void start(String DBDirectory, String DBUser, String DBPassword) {
@@ -90,6 +106,7 @@ public class BankGUI implements ActionListener {
         loginConstraints.gridy = 10;
         loginPanel.add(loginConnectButton, loginConstraints);
     }
+
 
     private void buildInfoPanel() {
         // Add code here that builds the bank info panel
