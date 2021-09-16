@@ -112,7 +112,7 @@ public class BankGUI implements ActionListener {
         infoPanel.setLayout(new GridBagLayout());
         infoConstraints = new GridBagConstraints();
 
-        infoWelcomeUserLabel = new JLabel("Welcome, " + loginUsernameEntry.getText() + "!");
+        infoWelcomeUserLabel = new JLabel();
         infoConstraints.gridx = 0;
         infoConstraints.gridy = 0;
         infoPanel.add(infoWelcomeUserLabel, infoConstraints);
@@ -211,32 +211,24 @@ public class BankGUI implements ActionListener {
         if (click.getSource() == loginConnectButton) {
             loginButtonClicked();
         } else if (click.getSource() == infoExitButton) {
+            bankHandler.closeConnection();
             System.exit(0);
         }
     }
 
     private void loginButtonClicked() {
-        if (!checkUserAndPass()) {
-            return;
-        }
 
-        String user = loginUsernameEntry.getText();
+        String email = loginUsernameEntry.getText();
         String pin = String.valueOf(loginPasswordEntry.getPassword());
-        if (!bankHandler.attemptLogin(user, pin)) {
+        if (!bankHandler.attemptLogin(email, pin)) {
             JOptionPane.showMessageDialog(null, "Login credentials invalid.");
             return;
         }
         switchToInfo();
+        infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+        infoSavingsAmountLabel.setText(String.valueOf(bankHandler.getSavingsAmount(email)));
+        infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
     }
 
-    private boolean checkUserAndPass() {
 
-        if (loginUsernameEntry.getText().isBlank() || loginPasswordEntry.getPassword().length == 0) {
-            JOptionPane.showMessageDialog(null, "Must enter a user and password");
-            return false;
-        }
-
-
-        return true;
-    }
 }
