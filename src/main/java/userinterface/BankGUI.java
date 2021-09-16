@@ -12,8 +12,6 @@ public class BankGUI implements ActionListener {
     private JFrame frame;
     private BankHandler bankHandler;
 
-    //Add code for infoPanel
-
     private JPanel loginPanel;
     private GridBagConstraints loginConstraints;
 
@@ -27,14 +25,13 @@ public class BankGUI implements ActionListener {
     private JPanel infoPanel;
     private GridBagConstraints infoConstraints;
 
-    private JLabel infoWelcomeUser;
+    private JLabel infoWelcomeUserLabel;
     private JLabel infoCheckingLabel;
     private JLabel infoCheckingAmountLabel;
     private JLabel infoSavingsLabel;
     private JLabel infoSavingsAmountLabel;
     private JTextField infoWithdrawEntry;
     private JButton infoWithdrawButton;
-    private JTextField infoDepositEntry;
     private JButton infoDepositButton;
     private JButton infoExitButton;
 
@@ -46,6 +43,7 @@ public class BankGUI implements ActionListener {
 
     private void buildFrameAndPanels() {
         buildLoginPanel();
+        buildInfoPanel();
 
         frame = new JFrame();
         frame.setTitle("Java Bank ATM");
@@ -109,11 +107,88 @@ public class BankGUI implements ActionListener {
 
 
     private void buildInfoPanel() {
-        // Add code here that builds the bank info panel
+        infoPanel = new JPanel();
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        infoPanel.setLayout(new GridBagLayout());
+        infoConstraints = new GridBagConstraints();
+
+        infoWelcomeUserLabel = new JLabel("Welcome, " + loginUsernameEntry.getText() + "!");
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 0;
+        infoPanel.add(infoWelcomeUserLabel, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 1, 40);
+
+        infoCheckingLabel = new JLabel("Checking Account Amount: ");
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 2;
+        infoPanel.add(infoCheckingLabel, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 3, 15);
+
+        //Enter received balance here
+        infoCheckingAmountLabel = new JLabel("");
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 4;
+        infoPanel.add(infoCheckingAmountLabel, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 5, 25);
+
+        infoSavingsLabel = new JLabel("Savings Account Amount: ");
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 6;
+        infoPanel.add(infoSavingsLabel, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 7, 15);
+
+        //Enter received savings balanced here
+        infoSavingsAmountLabel = new JLabel("");
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 8;
+        infoPanel.add(infoSavingsAmountLabel, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 9, 25);
+
+        infoWithdrawEntry = new JTextField();
+        infoWithdrawEntry.setPreferredSize(new Dimension(200, 20));
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 10;
+        infoPanel.add(infoWithdrawEntry, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 11, 10);
+
+        infoWithdrawButton = new JButton("Withdraw amount Entered");
+        infoWithdrawButton.setPreferredSize(new Dimension(225, 100));
+        infoWithdrawButton.addActionListener(this);
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 12;
+        infoPanel.add(infoWithdrawButton, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 15, 10);
+
+        infoDepositButton = new JButton("Deposit amount entered");
+        infoDepositButton.setPreferredSize(new Dimension(225, 100));
+        infoDepositButton.addActionListener(this);
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 16;
+        infoPanel.add(infoDepositButton, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 17, 30);
+
+        infoExitButton = new JButton("Exit");
+        infoExitButton.setPreferredSize(new Dimension(125, 75));
+        infoExitButton.addActionListener(this);
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 18;
+        infoPanel.add(infoExitButton, infoConstraints);
+
     }
 
     private void switchToInfo() {
-        // Add code here that switches to bank information panel
+        frame.remove(loginPanel);
+        frame.setSize(550, 650);
+        frame.add(infoPanel);
+        refreshFrame();
     }
 
     private void spaceMaker(GridBagConstraints constraints, JPanel panel,
@@ -133,6 +208,8 @@ public class BankGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent click) {
         if (click.getSource() == loginConnectButton) {
+            //May put this into a method to clean up code
+
             if (!checkUserAndPass()) {
                 return;
             }
@@ -140,10 +217,11 @@ public class BankGUI implements ActionListener {
             String user = loginUsernameEntry.getText();
             String pin = String.valueOf(loginPasswordEntry.getPassword());
             if (bankHandler.attemptLogin(user, pin)) {
-
-                //Add code here to call the transition panels method, and also grab bank info from SQL database
+                switchToInfo();
 
             }
+        } else if (click.getSource() == infoExitButton) {
+            System.exit(0);
         }
     }
 
