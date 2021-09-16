@@ -23,7 +23,7 @@ public class BankGUI implements ActionListener {
     private JButton loginConnectButton;
 
 
-    public void start(String DBDirectory, String DBUser, String DBPassword) throws InterruptedException {
+    public void start(String DBDirectory, String DBUser, String DBPassword) {
         bankHandler = new BankHandler(DBDirectory, DBUser, DBPassword);
         buildFrameAndPanels();
     }
@@ -68,7 +68,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(loginConstraints, loginPanel, 0, 5, 15);
 
-        loginPasswordLabel = new JLabel("Password");
+        loginPasswordLabel = new JLabel("PIN");
         loginConstraints.gridx = 0;
         loginConstraints.gridy = 6;
         loginPanel.add(loginPasswordLabel, loginConstraints);
@@ -91,6 +91,14 @@ public class BankGUI implements ActionListener {
         loginPanel.add(loginConnectButton, loginConstraints);
     }
 
+    private void buildInfoPanel() {
+        // Add code here that builds the bank info panel
+    }
+
+    private void switchToInfo() {
+        // Add code here that switches to bank information panel
+    }
+
     private void spaceMaker(GridBagConstraints constraints, JPanel panel,
                             int gridx, int gridy, int space) {                             //Method to help space out the components
         JLabel spacerTest = new JLabel("");
@@ -111,7 +119,14 @@ public class BankGUI implements ActionListener {
             if (!checkUserAndPass()) {
                 return;
             }
-            // Execute login here
+
+            String user = loginUsernameEntry.getText();
+            String pin = String.valueOf(loginPasswordEntry.getPassword());
+            if (bankHandler.attemptLogin(user, pin)) {
+
+                //Add code here to call the transition panels method, and also grab bank info from SQL database
+
+            }
         }
     }
 
@@ -121,6 +136,7 @@ public class BankGUI implements ActionListener {
             JOptionPane.showMessageDialog(null, "Must enter a user and password");
             return false;
         }
+
 
         return true;
     }
