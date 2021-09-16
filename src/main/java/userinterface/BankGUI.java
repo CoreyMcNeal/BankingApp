@@ -30,7 +30,7 @@ public class BankGUI implements ActionListener {
     private JLabel infoCheckingAmountLabel;
     private JLabel infoSavingsLabel;
     private JLabel infoSavingsAmountLabel;
-    private JTextField infoWithdrawEntry;
+    private JTextField infoNumberEntry;
     private JButton infoWithdrawButton;
     private JButton infoDepositButton;
     private JButton infoExitButton;
@@ -149,11 +149,11 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(infoConstraints, infoPanel, 0, 9, 25);
 
-        infoWithdrawEntry = new JTextField();
-        infoWithdrawEntry.setPreferredSize(new Dimension(200, 20));
+        infoNumberEntry = new JTextField();
+        infoNumberEntry.setPreferredSize(new Dimension(200, 20));
         infoConstraints.gridx = 0;
         infoConstraints.gridy = 10;
-        infoPanel.add(infoWithdrawEntry, infoConstraints);
+        infoPanel.add(infoNumberEntry, infoConstraints);
 
         spaceMaker(infoConstraints, infoPanel, 0, 11, 10);
 
@@ -188,6 +188,7 @@ public class BankGUI implements ActionListener {
         frame.remove(loginPanel);
         frame.setSize(550, 650);
         frame.add(infoPanel);
+        infoNumberEntry.requestFocus();
         refreshFrame();
     }
 
@@ -208,21 +209,24 @@ public class BankGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent click) {
         if (click.getSource() == loginConnectButton) {
-            //May put this into a method to clean up code
-
-            if (!checkUserAndPass()) {
-                return;
-            }
-
-            String user = loginUsernameEntry.getText();
-            String pin = String.valueOf(loginPasswordEntry.getPassword());
-            if (bankHandler.attemptLogin(user, pin)) {
-                switchToInfo();
-
-            }
+            loginButtonClicked();
         } else if (click.getSource() == infoExitButton) {
             System.exit(0);
         }
+    }
+
+    private void loginButtonClicked() {
+        if (!checkUserAndPass()) {
+            return;
+        }
+
+        String user = loginUsernameEntry.getText();
+        String pin = String.valueOf(loginPasswordEntry.getPassword());
+        if (!bankHandler.attemptLogin(user, pin)) {
+            JOptionPane.showMessageDialog(null, "Login credentials invalid.");
+            return;
+        }
+        switchToInfo();
     }
 
     private boolean checkUserAndPass() {
