@@ -33,6 +33,8 @@ public class BankGUI implements ActionListener {
     private JTextField infoNumberEntry;
     private JButton infoWithdrawButton;
     private JButton infoDepositButton;
+    private JButton infoCheckToSaveButton;
+    private JButton infoSaveToCheckButton;
     private JButton infoExitButton;
 
 
@@ -48,7 +50,6 @@ public class BankGUI implements ActionListener {
         frame = new JFrame();
         frame.setTitle("Java Bank ATM");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
         frame.setSize(550, 350);
         frame.add(loginPanel, BorderLayout.CENTER);
         frame.setVisible(true);
@@ -158,7 +159,7 @@ public class BankGUI implements ActionListener {
         spaceMaker(infoConstraints, infoPanel, 0, 11, 10);
 
         infoWithdrawButton = new JButton("Withdraw amount in dollars");
-        infoWithdrawButton.setPreferredSize(new Dimension(225, 100));
+        infoWithdrawButton.setPreferredSize(new Dimension(225, 75));
         infoWithdrawButton.addActionListener(this);
         infoConstraints.gridx = 0;
         infoConstraints.gridy = 12;
@@ -167,7 +168,7 @@ public class BankGUI implements ActionListener {
         spaceMaker(infoConstraints, infoPanel, 0, 15, 10);
 
         infoDepositButton = new JButton("Deposit amount in dollars");
-        infoDepositButton.setPreferredSize(new Dimension(225, 100));
+        infoDepositButton.setPreferredSize(new Dimension(225, 75));
         infoDepositButton.addActionListener(this);
         infoConstraints.gridx = 0;
         infoConstraints.gridy = 16;
@@ -175,18 +176,36 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(infoConstraints, infoPanel, 0, 17, 30);
 
+        infoCheckToSaveButton = new JButton("Transfer From Checking to Savings");
+        infoCheckToSaveButton.setPreferredSize(new Dimension(270, 50));
+        infoCheckToSaveButton.addActionListener(this);
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 18;
+        infoPanel.add(infoCheckToSaveButton, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 19, 15);
+
+        infoSaveToCheckButton = new JButton("Transfer From Savings to Checking");
+        infoSaveToCheckButton.setPreferredSize(new Dimension(270, 50));
+        infoSaveToCheckButton.addActionListener(this);
+        infoConstraints.gridx = 0;
+        infoConstraints.gridy = 20;
+        infoPanel.add(infoSaveToCheckButton, infoConstraints);
+
+        spaceMaker(infoConstraints, infoPanel, 0, 21, 20);
+
         infoExitButton = new JButton("Exit");
         infoExitButton.setPreferredSize(new Dimension(125, 75));
         infoExitButton.addActionListener(this);
         infoConstraints.gridx = 0;
-        infoConstraints.gridy = 18;
+        infoConstraints.gridy = 22;
         infoPanel.add(infoExitButton, infoConstraints);
 
     }
 
     private void switchToInfo() {
         frame.remove(loginPanel);
-        frame.setSize(550, 650);
+        frame.setSize(550, 700);
         frame.add(infoPanel);
         infoNumberEntry.requestFocus();
         refreshFrame();
@@ -218,6 +237,10 @@ public class BankGUI implements ActionListener {
             withdrawButtonClicked();
         } else if (click.getSource() == infoDepositButton) {
             depositButtonClicked();
+        } else if (click.getSource() == infoCheckToSaveButton) {
+            // Code to transfer from checking to savings here
+        } else if (click.getSource() == infoSaveToCheckButton) {
+            // code to transfer from savings to checking here
         }
 
     }
