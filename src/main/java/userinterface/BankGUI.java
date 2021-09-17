@@ -157,7 +157,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(infoConstraints, infoPanel, 0, 11, 10);
 
-        infoWithdrawButton = new JButton("Withdraw amount Entered");
+        infoWithdrawButton = new JButton("Withdraw amount in dollars");
         infoWithdrawButton.setPreferredSize(new Dimension(225, 100));
         infoWithdrawButton.addActionListener(this);
         infoConstraints.gridx = 0;
@@ -166,7 +166,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(infoConstraints, infoPanel, 0, 15, 10);
 
-        infoDepositButton = new JButton("Deposit amount entered");
+        infoDepositButton = new JButton("Deposit amount in dollars");
         infoDepositButton.setPreferredSize(new Dimension(225, 100));
         infoDepositButton.addActionListener(this);
         infoConstraints.gridx = 0;
@@ -208,12 +208,18 @@ public class BankGUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent click) {
+
         if (click.getSource() == loginConnectButton) {
             loginButtonClicked();
         } else if (click.getSource() == infoExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
+        } else if (click.getSource() == infoWithdrawButton) {
+            withdrawButtonClicked();
+        } else if (click.getSource() == infoDepositButton) {
+            depositButtonClicked();
         }
+
     }
 
     private void loginButtonClicked() {
@@ -230,5 +236,49 @@ public class BankGUI implements ActionListener {
         infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
     }
 
+    private void withdrawButtonClicked() {
+        if (infoNumberEntry.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entry cannot be empty");
+            return;
+        }
+        String email = loginUsernameEntry.getText();
+        try {
+            int requestedAmount = Integer.parseInt(infoNumberEntry.getText());
+            if (!bankHandler.withdrawBank(requestedAmount, loginUsernameEntry.getText())){
+                return;
+            }
+            JOptionPane.showMessageDialog(null, "Amount entered has been withdrawn.");
 
+            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+            refreshFrame();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Please enter a whole dollar amount.");
+        } finally {
+            infoNumberEntry.requestFocus();
+        }
+
+    }
+
+    private void depositButtonClicked() {
+        if (infoNumberEntry.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entry cannot be empty");
+            return;
+        }
+
+        String email = loginUsernameEntry.getText();
+        try {
+            int requestedAmount = Integer.parseInt(infoNumberEntry.getText());
+            bankHandler.depositBank(requestedAmount, loginUsernameEntry.getText());
+            JOptionPane.showMessageDialog(null, "Amount entered has been deposited.");
+
+            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+            refreshFrame();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Please enter a whole dollar amount.");
+        } finally {
+            infoNumberEntry.requestFocus();
+        }
+    }
 }

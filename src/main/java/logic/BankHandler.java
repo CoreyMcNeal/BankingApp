@@ -19,6 +19,8 @@ public class BankHandler {
         }
     }
 
+
+
     public boolean attemptLogin(String email, String pin) {      // Checks to see if username and password combo
         try {                                                       // exists on loginInfo DB table
             myStmt = myConn.createStatement();
@@ -102,6 +104,60 @@ public class BankHandler {
         } catch (Exception exc) {
             exc.printStackTrace();
             return "";
+        }
+    }
+
+    public boolean withdrawBank(int requestedAmount, String email) {
+        try {
+            myStmt = myConn.createStatement();
+            myResults = myStmt.executeQuery("SELECT checkingAccount FROM bankDB.bankInfo " +
+                    "JOIN bankDB.loginInfo " +
+                    "WHERE bankDB.bankInfo.client_id = bankDB.loginInfo.client_id AND " +
+                    "bankDB.bankInfo.email = '" + email + "';");
+            myResults.next();
+            int checkingAmount = (int) Double.parseDouble(myResults.getString("checkingAccount"));
+
+            closeStatementResultSet();
+
+            myStmt = myConn.createStatement();
+            if (checkingAmount < requestedAmount) {
+                JOptionPane.showMessageDialog(null, "Not enough in checking account");
+                closeStatementResultSet();
+                return false;
+            }
+
+            myStmt.executeUpdate("UPDATE bankInfo " +
+                                    "SET bankInfo.checkingAccount = bankInfo.checkingAccount - " + requestedAmount +
+                                    " WHERE email = '" + email + "';");
+
+            closeStatementResultSet();
+            return true;
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            return false;
+        }
+    }
+
+    public void depositBank(int requestedAmount, String email) {
+        try {
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate("UPDATE bankInfo " +
+                    "SET bankInfo.checkingAccount = bankInfo.checkingAccount + " + requestedAmount +
+                    " WHERE email = '" + email + "';");
+            closeStatementResultSet();
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    private void closeStatementResultSet() {
+        try {
+            myStmt.close();
+            myResults.close();
+        } catch(Exception exc) {
+            exc.printStackTrace();
         }
     }
 
