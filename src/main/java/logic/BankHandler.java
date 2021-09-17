@@ -50,7 +50,7 @@ public class BankHandler {
         }
     }
 
-    public Double getCheckingAmount(String email) {
+    public int getCheckingAmount(String email) {
         try {
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery("SELECT checkingAccount FROM bankDB.bankInfo " +
@@ -58,18 +58,18 @@ public class BankHandler {
                                                 "WHERE bankDB.bankInfo.client_id = bankDB.loginInfo.client_id AND " +
                                                 "bankDB.bankInfo.email = '" + email + "';" );
             myResults.next();
-            double checkingAmount = Double.parseDouble(myResults.getString("checkingAccount"));
+            int checkingAmount = (int) Double.parseDouble(myResults.getString("checkingAccount"));
 
             myStmt.close();
             myResults.close();
             return checkingAmount;
         } catch (Exception exc) {
             exc.printStackTrace();
-            return 0.0;
+            return 0;
         }
     }
 
-    public Double getSavingsAmount(String email) {
+    public int getSavingsAmount(String email) {
         try {
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery("SELECT savingsAccount FROM bankDB.bankInfo " +
@@ -77,14 +77,15 @@ public class BankHandler {
                     "WHERE bankDB.bankInfo.client_id = bankDB.loginInfo.client_id AND " +
                     "bankDB.bankInfo.email = '" + email + "';" );
             myResults.next();
-            double savingsAmount = Double.parseDouble(myResults.getString("savingsAccount"));
+            int savingsAmount = Integer.parseInt(myResults.getString("savingsAccount"));
+
 
             myStmt.close();
             myResults.close();
             return savingsAmount;
         } catch (Exception exc) {
             exc.printStackTrace();
-            return 0.0;
+            return 0;
         }
     }
 
@@ -154,7 +155,7 @@ public class BankHandler {
 
     public void checkingToSavings(int requestedAmount, String email) {
 
-        int checkingAmount = getCheckingAmount(email).intValue();
+        int checkingAmount = getCheckingAmount(email);
         if (checkingAmount < requestedAmount) {
             JOptionPane.showMessageDialog(null, "Not enough in savings account.");
             return;
@@ -182,7 +183,7 @@ public class BankHandler {
     }
 
     public void savingsToChecking(int requestedAmount, String email) {
-        int savingsAmount = getSavingsAmount(email).intValue();
+        int savingsAmount = getSavingsAmount(email);
         if (savingsAmount < requestedAmount) {
             JOptionPane.showMessageDialog(null, "Not enough in checking account.");
             return;

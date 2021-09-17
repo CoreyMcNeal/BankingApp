@@ -268,8 +268,8 @@ public class BankGUI implements ActionListener {
             return;
         }
         switchToInfo();
-        infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
-        infoSavingsAmountLabel.setText(String.valueOf(bankHandler.getSavingsAmount(email)));
+        infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
+        infoSavingsAmountLabel.setText("$" + bankHandler.getSavingsAmount(email));
         infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
     }
 
@@ -286,7 +286,7 @@ public class BankGUI implements ActionListener {
             }
             JOptionPane.showMessageDialog(null, "Amount entered has successfully been withdrawn.");
 
-            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+            infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
             refreshFrame();
         } catch (Exception exc) {
             exc.printStackTrace();
@@ -309,7 +309,7 @@ public class BankGUI implements ActionListener {
             bankHandler.depositBank(requestedAmount, loginUsernameEntry.getText());
             JOptionPane.showMessageDialog(null, "Amount entered has been deposited.");
 
-            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+            infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
             refreshFrame();
         } catch (Exception exc) {
             exc.printStackTrace();
@@ -329,8 +329,8 @@ public class BankGUI implements ActionListener {
         try {
             bankHandler.checkingToSavings(Integer.parseInt(infoNumberEntry.getText()), email);
 
-            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
-            infoSavingsAmountLabel.setText(String.valueOf(bankHandler.getSavingsAmount(email)));
+            infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
+            infoSavingsAmountLabel.setText("$" + bankHandler.getSavingsAmount(email));
             refreshFrame();
         } catch (Exception exc) {
             exc.printStackTrace();
@@ -347,8 +347,8 @@ public class BankGUI implements ActionListener {
         try {
             bankHandler.savingsToChecking(Integer.parseInt(infoNumberEntry.getText()), email);
 
-            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
-            infoSavingsAmountLabel.setText(String.valueOf(bankHandler.getSavingsAmount(email)));
+            infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
+            infoSavingsAmountLabel.setText("$" + bankHandler.getSavingsAmount(email));
             refreshFrame();
         } catch (Exception exc) {
             exc.printStackTrace();
