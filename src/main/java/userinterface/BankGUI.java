@@ -21,6 +21,7 @@ public class BankGUI implements ActionListener {
     private JLabel loginPasswordLabel;
     private JPasswordField loginPasswordEntry;
     private JButton loginConnectButton;
+    private JButton loginRegisterButton;
     private JButton loginExitButton;
 
     private JPanel infoPanel;
@@ -51,7 +52,7 @@ public class BankGUI implements ActionListener {
         frame = new JFrame();
         frame.setTitle("Java Bank ATM");
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.setSize(550, 400);
+        frame.setSize(550, 500);
         frame.add(loginPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
@@ -99,18 +100,29 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(loginConstraints, loginPanel, 0, 9, 20);
 
-        loginConnectButton = new JButton("Login");
+        loginConnectButton = new JButton("Login with Credentials");
         loginConnectButton.setPreferredSize(new Dimension(200, 50));
         loginConnectButton.addActionListener(this);
         loginConstraints.gridx = 0;
         loginConstraints.gridy = 10;
         loginPanel.add(loginConnectButton, loginConstraints);
 
+        spaceMaker(loginConstraints, loginPanel, 0, 11, 20);
+
+        loginRegisterButton = new JButton("Register with Credentials");
+        loginRegisterButton.setPreferredSize(new Dimension(200, 50));
+        loginRegisterButton.addActionListener(this);
+        loginConstraints.gridx = 0;
+        loginConstraints.gridy = 12;
+        loginPanel.add(loginRegisterButton, loginConstraints);
+
+        spaceMaker(loginConstraints, loginPanel, 0 , 13, 20);
+
         loginExitButton = new JButton("Exit");
         loginExitButton.setPreferredSize(new Dimension(150, 50));
         loginExitButton.addActionListener(this);
         loginConstraints.gridx = 0;
-        loginConstraints.gridy = 11;
+        loginConstraints.gridy = 14;
         loginPanel.add(loginExitButton, loginConstraints);
     }
 
@@ -238,12 +250,15 @@ public class BankGUI implements ActionListener {
 
         if (click.getSource() == loginConnectButton) {
             loginButtonClicked();
+
         } else if (click.getSource() == loginExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
+
         } else if (click.getSource() == infoExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
+
         } else if (click.getSource() == infoWithdrawButton) {
             withdrawButtonClicked();
 
@@ -278,6 +293,7 @@ public class BankGUI implements ActionListener {
             JOptionPane.showMessageDialog(null, "Entry cannot be empty");
             return;
         }
+
         String email = loginUsernameEntry.getText();
         try {
             int requestedAmount = Integer.parseInt(infoNumberEntry.getText());
