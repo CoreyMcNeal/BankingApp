@@ -152,6 +152,63 @@ public class BankHandler {
         }
     }
 
+    public void checkingToSavings(int requestedAmount, String email) {
+
+        int checkingAmount = getCheckingAmount(email).intValue();
+        if (checkingAmount < requestedAmount) {
+            JOptionPane.showMessageDialog(null, "Not enough in savings account.");
+            return;
+        }
+
+        try {
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate(" UPDATE bankInfo " +
+                                     " SET bankInfo.checkingAccount = bankInfo.checkingAccount - " + requestedAmount +
+                                     " WHERE bankInfo.email = '" + email + "' " +
+                                     " AND client_id > 0;");
+
+            closeStatementResultSet();
+
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate( " UPDATE bankInfo " +
+                                      " SET bankInfo.savingsAccount = bankInfo.savingsAccount + " + requestedAmount +
+                                      " WHERE bankInfo.email = '" + email + "' " +
+                                      " AND client_id > 0;");
+
+            JOptionPane.showMessageDialog(null, "Transfer Complete.");
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    public void savingsToChecking(int requestedAmount, String email) {
+        int savingsAmount = getSavingsAmount(email).intValue();
+        if (savingsAmount < requestedAmount) {
+            JOptionPane.showMessageDialog(null, "Not enough in checking account.");
+            return;
+        }
+
+        try {
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate(" UPDATE bankInfo " +
+                    " SET bankInfo.checkingAccount = bankInfo.checkingAccount + " + requestedAmount +
+                    " WHERE bankInfo.email = '" + email + "' " +
+                    " AND client_id > 0;");
+
+            closeStatementResultSet();
+
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate( " UPDATE bankInfo " +
+                    " SET bankInfo.savingsAccount = bankInfo.savingsAccount - " + requestedAmount +
+                    " WHERE bankInfo.email = '" + email + "' " +
+                    " AND client_id > 0;");
+
+            JOptionPane.showMessageDialog(null, "Transfer Complete.");
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
     private void closeStatementResultSet() {
         try {
             myStmt.close();

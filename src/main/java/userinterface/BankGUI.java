@@ -21,6 +21,7 @@ public class BankGUI implements ActionListener {
     private JLabel loginPasswordLabel;
     private JPasswordField loginPasswordEntry;
     private JButton loginConnectButton;
+    private JButton loginExitButton;
 
     private JPanel infoPanel;
     private GridBagConstraints infoConstraints;
@@ -49,8 +50,8 @@ public class BankGUI implements ActionListener {
 
         frame = new JFrame();
         frame.setTitle("Java Bank ATM");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(550, 350);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setSize(550, 400);
         frame.add(loginPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
@@ -104,6 +105,13 @@ public class BankGUI implements ActionListener {
         loginConstraints.gridx = 0;
         loginConstraints.gridy = 10;
         loginPanel.add(loginConnectButton, loginConstraints);
+
+        loginExitButton = new JButton("Exit");
+        loginExitButton.setPreferredSize(new Dimension(150, 50));
+        loginExitButton.addActionListener(this);
+        loginConstraints.gridx = 0;
+        loginConstraints.gridy = 11;
+        loginPanel.add(loginExitButton, loginConstraints);
     }
 
 
@@ -230,19 +238,25 @@ public class BankGUI implements ActionListener {
 
         if (click.getSource() == loginConnectButton) {
             loginButtonClicked();
+        } else if (click.getSource() == loginExitButton) {
+            bankHandler.closeConnection();
+            System.exit(0);
         } else if (click.getSource() == infoExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
         } else if (click.getSource() == infoWithdrawButton) {
             withdrawButtonClicked();
+
         } else if (click.getSource() == infoDepositButton) {
             depositButtonClicked();
-        } else if (click.getSource() == infoCheckToSaveButton) {
-            // Code to transfer from checking to savings here
-        } else if (click.getSource() == infoSaveToCheckButton) {
-            // code to transfer from savings to checking here
-        }
 
+        } else if (click.getSource() == infoCheckToSaveButton) {
+            checkToSaveButtonClicked();
+
+        } else if (click.getSource() == infoSaveToCheckButton) {
+            saveToCheckButtonClicked();
+
+        }
     }
 
     private void loginButtonClicked() {
@@ -270,7 +284,7 @@ public class BankGUI implements ActionListener {
             if (!bankHandler.withdrawBank(requestedAmount, loginUsernameEntry.getText())){
                 return;
             }
-            JOptionPane.showMessageDialog(null, "Amount entered has been withdrawn.");
+            JOptionPane.showMessageDialog(null, "Amount entered has successfully been withdrawn.");
 
             infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
             refreshFrame();
@@ -302,6 +316,42 @@ public class BankGUI implements ActionListener {
             JOptionPane.showMessageDialog(null, "Please enter a whole dollar amount.");
         } finally {
             infoNumberEntry.requestFocus();
+        }
+    }
+
+    private void checkToSaveButtonClicked() {
+        if (infoNumberEntry.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entry cannot be empty");
+            return;
+        }
+
+        String email = loginUsernameEntry.getText();
+        try {
+            bankHandler.checkingToSavings(Integer.parseInt(infoNumberEntry.getText()), email);
+
+            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+            infoSavingsAmountLabel.setText(String.valueOf(bankHandler.getSavingsAmount(email)));
+            refreshFrame();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    private void saveToCheckButtonClicked() {
+        if (infoNumberEntry.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entry cannot be empty");
+            return;
+        }
+
+        String email = loginUsernameEntry.getText();
+        try {
+            bankHandler.savingsToChecking(Integer.parseInt(infoNumberEntry.getText()), email);
+
+            infoCheckingAmountLabel.setText(String.valueOf(bankHandler.getCheckingAmount(email)));
+            infoSavingsAmountLabel.setText(String.valueOf(bankHandler.getSavingsAmount(email)));
+            refreshFrame();
+        } catch (Exception exc) {
+            exc.printStackTrace();
         }
     }
 }
