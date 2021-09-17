@@ -16,4 +16,4 @@ The User must set up a local database using MySQL. To run the application correc
 
 # What I Learned
   - SQL setup through MySQLWorkbench
-  - SQL manipulation using the sql libraries in java
+  - SQL manipulation using the Java.SQL library
