@@ -39,6 +39,20 @@ public class BankGUI implements ActionListener {
     private JButton infoSaveToCheckButton;
     private JButton infoExitButton;
 
+    private JPanel registrationPanel;
+    private GridBagConstraints regConstraints;
+
+    private JLabel regEmailLabel;
+    private JTextField regEmailEntry;
+    private JLabel regPinLabel;
+    private JTextField regPinEntry;
+    private JLabel regFullNameLabel;
+    private JTextField regFullNameEntry;
+    private JLabel regAddressLabel;
+    private JTextField regAddressEntry;
+    private JLabel regPhoneLabel;
+    private JTextField regPhoneEntry;
+
 
     public void start(String DBDirectory, String DBUser, String DBPassword) {
         bankHandler = new BankHandler(DBDirectory, DBUser, DBPassword);
