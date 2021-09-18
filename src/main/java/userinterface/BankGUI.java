@@ -45,13 +45,17 @@ public class BankGUI implements ActionListener {
     private JLabel regEmailLabel;
     private JTextField regEmailEntry;
     private JLabel regPinLabel;
-    private JTextField regPinEntry;
+    private JPasswordField regPinEntry;
+    private JLabel regPinConfirmLabel;
+    private JPasswordField regPinConfirmEntry;
     private JLabel regFullNameLabel;
     private JTextField regFullNameEntry;
     private JLabel regAddressLabel;
     private JTextField regAddressEntry;
     private JLabel regPhoneLabel;
     private JTextField regPhoneEntry;
+    private JButton regSubmitButton;
+    private JButton regExitButton;
 
 
     public void start(String DBDirectory, String DBUser, String DBPassword) {
@@ -62,6 +66,7 @@ public class BankGUI implements ActionListener {
     private void buildFrameAndPanels() {
         buildLoginPanel();
         buildInfoPanel();
+        buildRegisterPanel();
 
         frame = new JFrame();
         frame.setTitle("Java Bank ATM");
@@ -114,7 +119,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(loginConstraints, loginPanel, 0, 9, 20);
 
-        loginConnectButton = new JButton("Login with Credentials");
+        loginConnectButton = new JButton("Login");
         loginConnectButton.setPreferredSize(new Dimension(200, 50));
         loginConnectButton.addActionListener(this);
         loginConstraints.gridx = 0;
@@ -123,7 +128,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(loginConstraints, loginPanel, 0, 11, 20);
 
-        loginRegisterButton = new JButton("Register with Credentials");
+        loginRegisterButton = new JButton("Create a new Account");
         loginRegisterButton.setPreferredSize(new Dimension(200, 50));
         loginRegisterButton.addActionListener(this);
         loginConstraints.gridx = 0;
@@ -139,7 +144,6 @@ public class BankGUI implements ActionListener {
         loginConstraints.gridy = 14;
         loginPanel.add(loginExitButton, loginConstraints);
     }
-
 
     private void buildInfoPanel() {
         infoPanel = new JPanel();
@@ -237,6 +241,119 @@ public class BankGUI implements ActionListener {
 
     }
 
+    private void buildRegisterPanel() {
+        registrationPanel = new JPanel();
+        registrationPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        registrationPanel.setLayout(new GridBagLayout());
+        regConstraints = new GridBagConstraints();
+
+        regEmailLabel = new JLabel("Email:");
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 0;
+        registrationPanel.add(regEmailLabel, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 1, 10);
+
+        regEmailEntry = new JTextField();
+        regEmailEntry.setPreferredSize(new Dimension(300, 20));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 2;
+        registrationPanel.add(regEmailEntry, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 3, 20);
+
+        regPinLabel = new JLabel("PIN Number (4 digits)");
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 4;
+        registrationPanel.add(regPinLabel, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 5, 10);
+
+        regPinEntry = new JPasswordField();
+        regPinEntry.setPreferredSize(new Dimension(300, 20));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 6;
+        registrationPanel.add(regPinEntry, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 7, 20);
+
+        regPinConfirmLabel = new JLabel("Confirm PIN");
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 8;
+        registrationPanel.add(regPinConfirmLabel, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 9, 10);
+
+        regPinConfirmEntry = new JPasswordField();
+        regPinConfirmEntry.setPreferredSize(new Dimension(300, 20));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 10;
+        registrationPanel.add(regPinConfirmEntry, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 11, 20);
+
+        regFullNameLabel = new JLabel("Enter Full Name");
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 12;
+        registrationPanel.add(regFullNameLabel, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 13, 10);
+
+        regFullNameEntry = new JTextField();
+        regFullNameEntry.setPreferredSize(new Dimension(300, 20));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 14;
+        registrationPanel.add(regFullNameEntry, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 15, 20);
+
+        regAddressLabel = new JLabel("Street Address:");
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 16;
+        registrationPanel.add(regAddressLabel, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 17, 10);
+
+        regAddressEntry = new JTextField();
+        regAddressEntry.setPreferredSize(new Dimension(300, 20));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 18;
+        registrationPanel.add(regAddressEntry, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 19, 20);
+
+        regPhoneLabel = new JLabel("Phone Number:");
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 20;
+        registrationPanel.add(regPhoneLabel, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 21, 10);
+
+        regPhoneEntry = new JTextField();
+        regPhoneEntry.setPreferredSize(new Dimension(300, 20));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 22;
+        registrationPanel.add(regPhoneEntry, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 23, 20);
+
+        regSubmitButton = new JButton("Submit");
+        regSubmitButton.addActionListener(this);
+        regSubmitButton.setPreferredSize(new Dimension(200, 100));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 24;
+        registrationPanel.add(regSubmitButton, regConstraints);
+
+        spaceMaker(regConstraints, registrationPanel, 0, 25, 20);
+
+        regExitButton = new JButton("Exit");
+        regExitButton.addActionListener(this);
+        regExitButton.setPreferredSize(new Dimension(200, 100));
+        regConstraints.gridx = 0;
+        regConstraints.gridy = 26;
+        registrationPanel.add(regExitButton, regConstraints);
+    }
+
     private void spaceMaker(GridBagConstraints constraints, JPanel panel,
                             int gridx, int gridy, int space) {                             //Method to help space out the components
         JLabel spacerTest = new JLabel("");
@@ -258,8 +375,7 @@ public class BankGUI implements ActionListener {
             loginConnectButtonClicked();
 
         } else if (click.getSource() == loginRegisterButton) {
-            loginRegisterButtonClicked();
-
+            switchToReg();
 
         } else if (click.getSource() == loginExitButton) {
             bankHandler.closeConnection();
@@ -281,6 +397,12 @@ public class BankGUI implements ActionListener {
         } else if (click.getSource() == infoSaveToCheckButton) {
             saveToCheckButtonClicked();
 
+        } else if (click.getSource() == regSubmitButton) {
+            //verify entries
+            //Code to submit new user into database
+        } else if (click.getSource() == regExitButton) {
+            bankHandler.closeConnection();
+            System.exit(0);
         }
     }
 
@@ -298,16 +420,42 @@ public class BankGUI implements ActionListener {
         infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
     }
 
-    private boolean validateEmail(String email) {
-        return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
-    }
-
     private void switchToInfo() {
         frame.remove(loginPanel);
         frame.setSize(550, 700);
         frame.add(infoPanel);
         infoNumberEntry.requestFocus();
         refreshFrame();
+    }
+
+    private void loginRegisterButtonClicked() {
+        String email = loginUsernameEntry.getText();
+        String pin = String.valueOf(loginPasswordEntry.getPassword());
+
+        if (email.isBlank() || pin.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entries cannot be empty.");
+        }
+
+        if (!validateEmail(email)) {
+            JOptionPane.showMessageDialog(null, "Invalid email format.");
+            return;
+        }
+
+        bankHandler.registerUser(email, pin);
+    }
+
+    private void switchToReg() {
+        frame.remove(loginPanel);
+        frame.setSize(550, 700);
+        frame.add(registrationPanel);
+        regEmailEntry.requestFocus();
+        regEmailEntry.setText(loginUsernameEntry.getText());
+        regPinEntry.setText(String.valueOf(loginPasswordEntry.getPassword()));
+        refreshFrame();
+    }
+
+    private boolean validateEmail(String email) {
+        return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
     }
 
     private void withdrawButtonClicked() {
@@ -393,19 +541,4 @@ public class BankGUI implements ActionListener {
         }
     }
 
-    private void loginRegisterButtonClicked() {
-        String email = loginUsernameEntry.getText();
-        String pin = String.valueOf(loginPasswordEntry.getPassword());
-
-        if (email.isBlank() || pin.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Entries cannot be empty.");
-        }
-
-        if (!validateEmail(email)) {
-            JOptionPane.showMessageDialog(null, "Invalid email format.");
-            return;
-        }
-
-        bankHandler.registerUser(email, pin);
-    }
 }
