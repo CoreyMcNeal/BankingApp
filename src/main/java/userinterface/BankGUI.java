@@ -457,9 +457,12 @@ public class BankGUI implements ActionListener {
         frame.add(registrationPanel);
         regEmailEntry.setText(loginUsernameEntry.getText());
         regPinEntry.setText(String.valueOf(loginPasswordEntry.getPassword()));
-        if (loginUsernameEntry.getText().length() > 0) {
+        if (loginUsernameEntry.getText().length() > 0 &&
+            String.valueOf(loginPasswordEntry.getPassword()).length() > 0) {
+
             regPinConfirmEntry.requestFocus();
-        } else if (loginUsernameEntry.getText().length() == 0) {
+
+        } else {
             regEmailEntry.requestFocus();
         }
 
