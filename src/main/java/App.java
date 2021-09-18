@@ -10,8 +10,9 @@ public class App {
         gui.start("jdbc:mysql://localhost:3306/bankDB", "root", "cm117670");
 
         //To-Do-List
-        // -Add registration option
+        // -Expand Registration to a whole panel, to enter in extra information like phone number, balances, etc.
         // -Add database file template to Github
+
 
     }
 }

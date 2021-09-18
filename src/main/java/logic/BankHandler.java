@@ -24,9 +24,10 @@ public class BankHandler {
     public boolean attemptLogin(String email, String pin) {      // Checks to see if username and password combo
         try {                                                       // exists on loginInfo DB table
             myStmt = myConn.createStatement();
-            myResults = myStmt.executeQuery("SELECT COUNT(*) FROM bankDB.loginInfo " +
-                                                 "WHERE email = '" + email + "' " +
-                                                 " AND pin_number = '" + pin + "';");
+            myResults = myStmt.executeQuery("SELECT COUNT(*) " +
+                                                " FROM bankDB.loginInfo " +
+                                                " WHERE email = '" + email + "' " +
+                                                " AND pin_number = '" + pin + "';");
 
             myResults.next();
             String exists = myResults.getString("COUNT(*)");
@@ -227,4 +228,41 @@ public class BankHandler {
         }
     }
 
+    public void registerUser(String email, String pin) {
+
+        try {
+            System.out.println("First");
+            myStmt = myConn.createStatement();
+            myResults = myStmt.executeQuery( " SELECT COUNT(*) " +
+                                                 " FROM loginInfo " +
+                                                 " WHERE email = '" + email + "' " +
+                                                 " AND client_id > 0;");
+
+            myResults.next();
+            String exists = myResults.getString("COUNT(*)");
+            if (!exists.equals("0")) {
+                JOptionPane.showMessageDialog(null, "Username already exists." +
+                                                                            " Please use a different user.");
+                closeStatementResultSet();
+                return;
+            }
+
+            closeStatementResultSet();
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate(" INSERT INTO loginInfo " +
+                                                 " VALUES ( NULL, '" + email + "', " + pin + ");" );
+
+            closeStatementResultSet();
+            myStmt = myConn.createStatement();
+            myStmt.executeUpdate(" INSERT INTO bankInfo " +
+                                     " VALUES ( NULL, '" + email + "', NULL, NULL, NULL, NULL, NULL);");
+
+            closeStatementResultSet();
+            JOptionPane.showMessageDialog(null, "User has been registered.");
+
+        } catch (Exception exc) {
+            JOptionPane.showMessageDialog(null, "Problem communicating with database.");
+            exc.printStackTrace();
+        }
+    }
 }

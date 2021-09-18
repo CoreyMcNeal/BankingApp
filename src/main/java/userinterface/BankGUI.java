@@ -223,14 +223,6 @@ public class BankGUI implements ActionListener {
 
     }
 
-    private void switchToInfo() {
-        frame.remove(loginPanel);
-        frame.setSize(550, 700);
-        frame.add(infoPanel);
-        infoNumberEntry.requestFocus();
-        refreshFrame();
-    }
-
     private void spaceMaker(GridBagConstraints constraints, JPanel panel,
                             int gridx, int gridy, int space) {                             //Method to help space out the components
         JLabel spacerTest = new JLabel("");
@@ -249,7 +241,11 @@ public class BankGUI implements ActionListener {
     public void actionPerformed(ActionEvent click) {
 
         if (click.getSource() == loginConnectButton) {
-            loginButtonClicked();
+            loginConnectButtonClicked();
+
+        } else if (click.getSource() == loginRegisterButton) {
+            loginRegisterButtonClicked();
+
 
         } else if (click.getSource() == loginExitButton) {
             bankHandler.closeConnection();
@@ -274,7 +270,7 @@ public class BankGUI implements ActionListener {
         }
     }
 
-    private void loginButtonClicked() {
+    private void loginConnectButtonClicked() {
 
         String email = loginUsernameEntry.getText();
         String pin = String.valueOf(loginPasswordEntry.getPassword());
@@ -286,6 +282,18 @@ public class BankGUI implements ActionListener {
         infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
         infoSavingsAmountLabel.setText("$" + bankHandler.getSavingsAmount(email));
         infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
+    }
+
+    private boolean validateEmail(String email) {
+        return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
+    }
+
+    private void switchToInfo() {
+        frame.remove(loginPanel);
+        frame.setSize(550, 700);
+        frame.add(infoPanel);
+        infoNumberEntry.requestFocus();
+        refreshFrame();
     }
 
     private void withdrawButtonClicked() {
@@ -369,5 +377,21 @@ public class BankGUI implements ActionListener {
         } catch (Exception exc) {
             exc.printStackTrace();
         }
+    }
+
+    private void loginRegisterButtonClicked() {
+        String email = loginUsernameEntry.getText();
+        String pin = String.valueOf(loginPasswordEntry.getPassword());
+
+        if (email.isBlank() || pin.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entries cannot be empty.");
+        }
+
+        if (!validateEmail(email)) {
+            JOptionPane.showMessageDialog(null, "Invalid email format.");
+            return;
+        }
+
+        bankHandler.registerUser(email, pin);
     }
 }
