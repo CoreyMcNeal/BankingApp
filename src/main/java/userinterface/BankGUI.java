@@ -262,7 +262,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(regConstraints, registrationPanel, 0, 3, 20);
 
-        regPinLabel = new JLabel("PIN Number (4 digits)");
+        regPinLabel = new JLabel("PIN Number (4 digits): ");
         regConstraints.gridx = 0;
         regConstraints.gridy = 4;
         registrationPanel.add(regPinLabel, regConstraints);
@@ -277,7 +277,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(regConstraints, registrationPanel, 0, 7, 20);
 
-        regPinConfirmLabel = new JLabel("Confirm PIN");
+        regPinConfirmLabel = new JLabel("Confirm PIN: ");
         regConstraints.gridx = 0;
         regConstraints.gridy = 8;
         registrationPanel.add(regPinConfirmLabel, regConstraints);
@@ -292,7 +292,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(regConstraints, registrationPanel, 0, 11, 20);
 
-        regFullNameLabel = new JLabel("Enter Full Name");
+        regFullNameLabel = new JLabel("Enter Full Name: ");
         regConstraints.gridx = 0;
         regConstraints.gridy = 12;
         registrationPanel.add(regFullNameLabel, regConstraints);
@@ -322,7 +322,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(regConstraints, registrationPanel, 0, 19, 20);
 
-        regPhoneLabel = new JLabel("Phone Number:");
+        regPhoneLabel = new JLabel("Phone Number (Format: XXX-XXX-XXXX):");
         regConstraints.gridx = 0;
         regConstraints.gridy = 20;
         registrationPanel.add(regPhoneLabel, regConstraints);
@@ -398,8 +398,15 @@ public class BankGUI implements ActionListener {
             saveToCheckButtonClicked();
 
         } else if (click.getSource() == regSubmitButton) {
-            //verify entries
-            //Code to submit new user into database
+            if (!checkAllEntries(regEmailEntry.getText(),
+                                 String.valueOf(regPinEntry.getPassword()),
+                                 String.valueOf(regPinConfirmEntry.getPassword()),
+                                 regPhoneEntry.getText())) {
+                return;
+            }
+
+            JOptionPane.showMessageDialog(null, "Valid");
+            //Code to create user goes here
         } else if (click.getSource() == regExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
@@ -448,14 +455,39 @@ public class BankGUI implements ActionListener {
         frame.remove(loginPanel);
         frame.setSize(550, 700);
         frame.add(registrationPanel);
-        regEmailEntry.requestFocus();
         regEmailEntry.setText(loginUsernameEntry.getText());
         regPinEntry.setText(String.valueOf(loginPasswordEntry.getPassword()));
+        if (loginUsernameEntry.getText().length() > 0) {
+            regPinConfirmEntry.requestFocus();
+        } else if (loginUsernameEntry.getText().length() == 0) {
+            regEmailEntry.requestFocus();
+        }
+
         refreshFrame();
     }
 
     private boolean validateEmail(String email) {
         return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
+    }
+
+    private boolean validatePIN(String pin, String confirmPin) {
+        return pin.matches("[0-4]{4}") &&
+                confirmPin.matches("[0-4]{4}") &&
+                pin.length() == 4 &&
+                confirmPin.length() == 4 &&
+                pin.equals(confirmPin);
+    }
+
+    private boolean validateName(String name) {     //Regex needs work
+        return name.matches("[a-zA-Z]");
+    }
+
+    private boolean validateAddress(String address) { //Regex needs work
+        return address.matches("[0-9a-zA-Z. ]");
+    }
+
+    private boolean validatePhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("[0-9]{3}-[0-9]{3}-[0-9]{4}");
     }
 
     private void withdrawButtonClicked() {
@@ -541,4 +573,23 @@ public class BankGUI implements ActionListener {
         }
     }
 
+    private boolean checkAllEntries(String email, String pin, String confirmPin, String phoneNumber) {
+
+        if (!validateEmail(email)) {
+            JOptionPane.showMessageDialog(null, "Email in incorrect format.");
+            return false;
+        }
+
+        if (!validatePIN(pin, confirmPin)) {
+            JOptionPane.showMessageDialog(null, "PIN in incorrect format. Please use 4 numbers.");
+            return false;
+        }
+
+        if (!validatePhoneNumber(phoneNumber)) {
+            JOptionPane.showMessageDialog(null, "Phone number in incorrect format.");
+            return false;
+        }
+
+        return true;
+    }
 }
