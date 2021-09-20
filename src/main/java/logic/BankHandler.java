@@ -270,7 +270,7 @@ public class BankHandler {
             myStmt.executeUpdate(" INSERT INTO bankInfo " +
                                      " VALUES ( NULL, '"  + email + "', '" + name
                                                 + "', '" + address + "', '" + phoneNumber +
-                                                "', NULL, NULL);");
+                                                "', 0, 0);");
 
             closeStatementResultSet();
             JOptionPane.showMessageDialog(null, "User has been registered.");
