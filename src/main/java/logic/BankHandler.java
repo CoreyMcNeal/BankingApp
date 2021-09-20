@@ -119,8 +119,9 @@ public class BankHandler {
                     "JOIN bankDB.loginInfo " +
                     "WHERE bankDB.bankInfo.client_id = bankDB.loginInfo.client_id AND " +
                     "bankDB.bankInfo.email = '" + email + "';");
+
             myResults.next();
-            int checkingAmount = (int) Double.parseDouble(myResults.getString("checkingAccount"));
+            int checkingAmount = myResults.getInt("checkingAccount");
 
             closeStatementResultSet();
 

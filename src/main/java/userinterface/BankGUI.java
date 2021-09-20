@@ -579,6 +579,8 @@ public class BankGUI implements ActionListener {
         }
 
         bankHandler.registerUser(email, pin, name, address, phone);
+
+        loginUsernameEntry.setText(regEmailEntry.getText());
         switchToLogin(registrationPanel);
     }
 
