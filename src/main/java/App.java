@@ -10,5 +10,6 @@ public class App {
 
         //To-Do-List
         // -Add database file template to Github
+        // -Make a back button for the registration page
     }
 }
