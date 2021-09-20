@@ -75,7 +75,7 @@ public class BankGUI implements ActionListener {
         frame.add(loginPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
-
+                                                            // initializing all the variables needed for each panel
     private void buildLoginPanel() {
         loginPanel = new JPanel();
         loginPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -232,7 +232,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(infoConstraints, infoPanel, 21, 20);
 
-        infoExitButton = new JButton("Exit");
+        infoExitButton = new JButton("Logout and Exit");
         infoExitButton.setPreferredSize(new Dimension(125, 75));
         infoExitButton.addActionListener(this);
         infoConstraints.gridx = 0;
@@ -346,7 +346,7 @@ public class BankGUI implements ActionListener {
 
         spaceMaker(regConstraints, registrationPanel, 25, 20);
 
-        regReturnButton = new JButton("Exit");
+        regReturnButton = new JButton("Exit to Menu");
         regReturnButton.addActionListener(this);
         regReturnButton.setPreferredSize(new Dimension(200, 100));
         regConstraints.gridx = 0;
@@ -363,14 +363,14 @@ public class BankGUI implements ActionListener {
         panel.add(spacerTest, constraints);
     }
 
-    private void refreshFrame() {
+    private void refreshFrame() {        //refreshes the UI for any changes
         frame.revalidate();
         frame.repaint();
     }
 
 
     @Override
-    public void actionPerformed(ActionEvent click) {
+    public void actionPerformed(ActionEvent click) {            // Click events for all the UI buttons
 
         if (click.getSource() == loginConnectButton) {
             loginConnectButtonClicked();
@@ -378,13 +378,10 @@ public class BankGUI implements ActionListener {
         } else if (click.getSource() == loginRegisterButton) {
             loginRegisterButtonClicked();
 
-        } else if (click.getSource() == loginExitButton) {
+        } else if (click.getSource() == loginExitButton || click.getSource() == infoExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
 
-        } else if (click.getSource() == infoExitButton) {
-            bankHandler.closeConnection();
-            System.exit(0);
 
         } else if (click.getSource() == infoWithdrawButton) {
             withdrawButtonClicked();
@@ -398,6 +395,7 @@ public class BankGUI implements ActionListener {
         } else if (click.getSource() == infoSaveToCheckButton) {
             saveToCheckButtonClicked();
 
+
         } else if (click.getSource() == regSubmitButton) {
             regCreateButtonClicked();
 
@@ -408,7 +406,7 @@ public class BankGUI implements ActionListener {
 
 
     //Login screen methods
-    private void loginConnectButtonClicked() {
+    private void loginConnectButtonClicked() {  //Attempts to login to the server with the given user and pin
 
         String email = loginUsernameEntry.getText();
         String pin = String.valueOf(loginPasswordEntry.getPassword());
@@ -420,20 +418,23 @@ public class BankGUI implements ActionListener {
         infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
         infoSavingsAmountLabel.setText("$" + bankHandler.getSavingsAmount(email));
         infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
-    } //login to info
+    }
 
+    private void loginRegisterButtonClicked() { // calls the panel switch to registrationPanel
+        switchToReg();
+    }
 
     //Panel switch methods
-    private void switchToInfo() {
+    private void switchToInfo() {               // Switches to the infoPanel, which houses all the bank information
         frame.remove(loginPanel);
         frame.setSize(550, 700);
         frame.add(infoPanel);
         infoNumberEntry.requestFocus();
         refreshFrame();
-    } //login to info
+    }
 
-    private void switchToLogin(JPanel currentPanel) {
-        frame.remove(currentPanel);
+    private void switchToLogin(JPanel currentPanel) {          // Switches to the login panel, and clears the registration
+        frame.remove(currentPanel);                            // panel boxes
         frame.setSize(550, 500);
         frame.add(loginPanel);
 
@@ -441,8 +442,8 @@ public class BankGUI implements ActionListener {
         refreshFrame();
     }
 
-    private void switchToReg() {
-        frame.remove(loginPanel);
+    private void switchToReg() {                          // Switches to the Registration panel, and carries over
+        frame.remove(loginPanel);                       // username and pin if already entered
         frame.setSize(550, 700);
         frame.add(registrationPanel);
         regEmailEntry.setText(loginUsernameEntry.getText());
@@ -456,9 +457,9 @@ public class BankGUI implements ActionListener {
         }
 
         refreshFrame();
-    } // login to register
+    }
 
-    private void clearRegBoxes() {
+    private void clearRegBoxes() {              // Clears the registrationPanel entry boxes
         regEmailEntry.setText("");
         regPinEntry.setText("");
         regPinConfirmEntry.setText("");
@@ -469,7 +470,8 @@ public class BankGUI implements ActionListener {
     }
 
     //Bank info screen methods
-    private void withdrawButtonClicked() {
+    private void withdrawButtonClicked() {      // Communicates with database to remove entry amount from checkingAccount
+
         if (infoNumberEntry.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Entry cannot be empty");
             return;
@@ -492,9 +494,10 @@ public class BankGUI implements ActionListener {
             infoNumberEntry.requestFocus();
         }
 
-    }  // info
+    }
 
-    private void depositButtonClicked() {
+    private void depositButtonClicked() {          // Communicates with database to add entry amount to checkingAccount
+
         if (infoNumberEntry.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Entry cannot be empty");
             return;
@@ -514,9 +517,12 @@ public class BankGUI implements ActionListener {
         } finally {
             infoNumberEntry.requestFocus();
         }
-    } // info
+    }
 
     private void checkToSaveButtonClicked() {
+                                                // Communicates with database to remove entry amount from checkAccount
+                                                // and add the same amount to savingsAccount
+
         if (infoNumberEntry.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Entry cannot be empty");
             return;
@@ -535,6 +541,9 @@ public class BankGUI implements ActionListener {
     } // info
 
     private void saveToCheckButtonClicked() {
+                                                    // Communicates with database to remove entry amount from savingsAccount
+                                                    // and add the same amount to checkingAccount
+
         if (infoNumberEntry.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Entry cannot be empty");
             return;
@@ -554,15 +563,10 @@ public class BankGUI implements ActionListener {
 
 
     //register account screen methods
-    private void loginRegisterButtonClicked() {
-        switchToReg();
-    } //login to register
-
-    private void regReturnButtonClicked() {
-        switchToLogin(registrationPanel);
-    }
 
     private void regCreateButtonClicked() {
+                                                    // Creates user if all entries pass checks, and then switches
+                                                    // to login page with user and pin pre-filled
         String email = regEmailEntry.getText();
         String name = regFullNameEntry.getText();
         String pin = String.valueOf(regPinEntry.getPassword());
@@ -576,9 +580,15 @@ public class BankGUI implements ActionListener {
 
         bankHandler.registerUser(email, pin, name, address, phone);
         switchToLogin(registrationPanel);
-    } //register
+    }
+
+    private void regReturnButtonClicked() {     // Calls switch to login page, fills login page with username
+        loginUsernameEntry.setText(regEmailEntry.getText());
+        switchToLogin(registrationPanel);
+    }
 
     private boolean checkAllEntries(String email, String pin, String confirmPin, String phoneNumber) {
+                                                                            //Checks each entry for valid input
 
         if (email.isBlank() || pin.isBlank()) {
             JOptionPane.showMessageDialog(null, "Entries cannot be empty.");
@@ -602,28 +612,29 @@ public class BankGUI implements ActionListener {
 
 
         return true;
-    } // register validation
+    }
 
-    private boolean validateEmail(String email) {
+    private boolean validateEmail(String email) {    // ensures input is a .com/org/net domain
         return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
-    } //register validation
+    }
 
     private boolean validatePIN(String pin, String confirmPin) {
+                                                                // ensures pins are numbers, the same, and 4 numbers long
         return pin.matches("[0-9]{4}") &&
                 confirmPin.matches("[0-9]{4}") &&
                 pin.length() == 4 &&
                 confirmPin.length() == 4 &&
                 pin.equals(confirmPin);
-    } //register validation
+    }
 
-    private boolean validatePhoneNumber(String phoneNumber) {
+    private boolean validatePhoneNumber(String phoneNumber) {            //Ensures the XXX-XXX-XXXX format
         return phoneNumber.matches("[0-9]{3}-[0-9]{3}-[0-9]{4}");
-    } // register validation
+    }
 
 
 
 
-    //Methods that need fixing/tuning
+    //Methods that need fixing/tuning. These are inactive, not being used.
     private boolean validateName(String name) {     //Regex needs work
         return name.matches("[a-zA-Z]");
     }

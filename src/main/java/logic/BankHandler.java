@@ -51,7 +51,7 @@ public class BankHandler {
         }
     }
 
-    public int getCheckingAmount(String email) {
+    public int getCheckingAmount(String email) {    //grabs the checkingAccount amount for a given users account
         try {
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery("SELECT checkingAccount FROM bankDB.bankInfo " +
@@ -70,7 +70,7 @@ public class BankHandler {
         }
     }
 
-    public int getSavingsAmount(String email) {
+    public int getSavingsAmount(String email) {            // //grabs the savingsAccount amount for a given users account
         try {
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery("SELECT savingsAccount FROM bankDB.bankInfo " +
@@ -91,7 +91,7 @@ public class BankHandler {
         }
     }
 
-    public String getName(String email) {
+    public String getName(String email) {             // Grabs the name associated with the email given
         try {
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery("SELECT name FROM bankDB.bankInfo " +
@@ -110,7 +110,9 @@ public class BankHandler {
         }
     }
 
-    public boolean withdrawBank(int requestedAmount, String email) {
+    public boolean withdrawBank(int requestedAmount, String email)
+    {
+                                                        // Takes away the amount entered from the users checkingAccount
         try {
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery("SELECT checkingAccount FROM bankDB.bankInfo " +
@@ -142,7 +144,7 @@ public class BankHandler {
         }
     }
 
-    public void depositBank(int requestedAmount, String email) {
+    public void depositBank(int requestedAmount, String email) {   // Adds the amount entered to the users checkingAccount
         try {
             myStmt = myConn.createStatement();
             myStmt.executeUpdate("UPDATE bankInfo " +
@@ -156,6 +158,9 @@ public class BankHandler {
     }
 
     public void checkingToSavings(int requestedAmount, String email) {
+
+                                                            //Subtracts the amount given from the checkingAccount,
+                                                            //Adds the amount given to the savingsAccount
 
         int checkingAmount = getCheckingAmount(email);
         if (checkingAmount < requestedAmount) {
@@ -185,6 +190,10 @@ public class BankHandler {
     }
 
     public void savingsToChecking(int requestedAmount, String email) {
+
+                                                            //Subtracts the amount given from the checkingAccount,
+                                                            //Adds the amount given to the savingsAccount
+
         int savingsAmount = getSavingsAmount(email);
         if (savingsAmount < requestedAmount) {
             JOptionPane.showMessageDialog(null, "Not enough in checking account.");
@@ -212,7 +221,7 @@ public class BankHandler {
         }
     }
 
-    private void closeStatementResultSet() {
+    private void closeStatementResultSet() {       // Closes both variables when finished.
         try {
             myStmt.close();
             myResults.close();
@@ -221,7 +230,7 @@ public class BankHandler {
         }
     }
 
-    public void closeConnection() {
+    public void closeConnection() {        // Closes main connection to SQL database
         try {
             myConn.close();
         } catch (Exception exc){
@@ -230,6 +239,9 @@ public class BankHandler {
     }
 
     public void registerUser(String email, String pin, String name, String address, String phoneNumber) {
+
+                                                    //Adds an entry to the loginInfo database and
+                                                    //bankInfo database based on the information given
 
         try {
             myStmt = myConn.createStatement();
