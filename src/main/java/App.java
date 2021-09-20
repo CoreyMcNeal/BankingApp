@@ -9,8 +9,8 @@ public class App {
         gui.start("jdbc:mysql://localhost:3306/bankDB", "root", "cm117670");
 
         //To-Do-List
-        // -Send registration page entries to the server. Make sure to check if the username already exists in loginInfo
         // -Add database file template to Github
 
+        //Self note - Fix the sending of the phone number to the database
     }
 }

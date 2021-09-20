@@ -375,7 +375,7 @@ public class BankGUI implements ActionListener {
             loginConnectButtonClicked();
 
         } else if (click.getSource() == loginRegisterButton) {
-            switchToReg();
+            loginRegisterButtonClicked();
 
         } else if (click.getSource() == loginExitButton) {
             bankHandler.closeConnection();
@@ -398,21 +398,15 @@ public class BankGUI implements ActionListener {
             saveToCheckButtonClicked();
 
         } else if (click.getSource() == regSubmitButton) {
-            if (!checkAllEntries(regEmailEntry.getText(),
-                                 String.valueOf(regPinEntry.getPassword()),
-                                 String.valueOf(regPinConfirmEntry.getPassword()),
-                                 regPhoneEntry.getText())) {
-                return;
-            }
+            regCreateButtonClicked();
 
-            JOptionPane.showMessageDialog(null, "Valid");
-            //Code to create user goes here
         } else if (click.getSource() == regExitButton) {
             bankHandler.closeConnection();
             System.exit(0);
         }
     }
 
+    //account information screen methods
     private void loginConnectButtonClicked() {
 
         String email = loginUsernameEntry.getText();
@@ -425,7 +419,7 @@ public class BankGUI implements ActionListener {
         infoCheckingAmountLabel.setText("$" + bankHandler.getCheckingAmount(email));
         infoSavingsAmountLabel.setText("$" + bankHandler.getSavingsAmount(email));
         infoWelcomeUserLabel.setText("Welcome, " + bankHandler.getName(email) + "!");
-    }
+    } //login to info
 
     private void switchToInfo() {
         frame.remove(loginPanel);
@@ -433,65 +427,7 @@ public class BankGUI implements ActionListener {
         frame.add(infoPanel);
         infoNumberEntry.requestFocus();
         refreshFrame();
-    }
-
-    private void loginRegisterButtonClicked() {
-        String email = loginUsernameEntry.getText();
-        String pin = String.valueOf(loginPasswordEntry.getPassword());
-
-        if (email.isBlank() || pin.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Entries cannot be empty.");
-        }
-
-        if (!validateEmail(email)) {
-            JOptionPane.showMessageDialog(null, "Invalid email format.");
-            return;
-        }
-
-        bankHandler.registerUser(email, pin);
-    }
-
-    private void switchToReg() {
-        frame.remove(loginPanel);
-        frame.setSize(550, 700);
-        frame.add(registrationPanel);
-        regEmailEntry.setText(loginUsernameEntry.getText());
-        regPinEntry.setText(String.valueOf(loginPasswordEntry.getPassword()));
-        if (loginUsernameEntry.getText().length() > 0 &&
-            String.valueOf(loginPasswordEntry.getPassword()).length() > 0) {
-
-            regPinConfirmEntry.requestFocus();
-
-        } else {
-            regEmailEntry.requestFocus();
-        }
-
-        refreshFrame();
-    }
-
-    private boolean validateEmail(String email) {
-        return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
-    }
-
-    private boolean validatePIN(String pin, String confirmPin) {
-        return pin.matches("[0-4]{4}") &&
-                confirmPin.matches("[0-4]{4}") &&
-                pin.length() == 4 &&
-                confirmPin.length() == 4 &&
-                pin.equals(confirmPin);
-    }
-
-    private boolean validateName(String name) {     //Regex needs work
-        return name.matches("[a-zA-Z]");
-    }
-
-    private boolean validateAddress(String address) { //Regex needs work
-        return address.matches("[0-9a-zA-Z. ]");
-    }
-
-    private boolean validatePhoneNumber(String phoneNumber) {
-        return phoneNumber.matches("[0-9]{3}-[0-9]{3}-[0-9]{4}");
-    }
+    } //login to info
 
     private void withdrawButtonClicked() {
         if (infoNumberEntry.getText().isBlank()) {
@@ -516,7 +452,7 @@ public class BankGUI implements ActionListener {
             infoNumberEntry.requestFocus();
         }
 
-    }
+    }  // info
 
     private void depositButtonClicked() {
         if (infoNumberEntry.getText().isBlank()) {
@@ -538,7 +474,7 @@ public class BankGUI implements ActionListener {
         } finally {
             infoNumberEntry.requestFocus();
         }
-    }
+    } // info
 
     private void checkToSaveButtonClicked() {
         if (infoNumberEntry.getText().isBlank()) {
@@ -556,7 +492,7 @@ public class BankGUI implements ActionListener {
         } catch (Exception exc) {
             exc.printStackTrace();
         }
-    }
+    } // info
 
     private void saveToCheckButtonClicked() {
         if (infoNumberEntry.getText().isBlank()) {
@@ -574,9 +510,73 @@ public class BankGUI implements ActionListener {
         } catch (Exception exc) {
             exc.printStackTrace();
         }
-    }
+    } // info
+
+
+    //register account screen methods
+    private void loginRegisterButtonClicked() {
+        switchToReg();
+    } //login to register
+
+    private void switchToReg() {
+        frame.remove(loginPanel);
+        frame.setSize(550, 700);
+        frame.add(registrationPanel);
+        regEmailEntry.setText(loginUsernameEntry.getText());
+        regPinEntry.setText(String.valueOf(loginPasswordEntry.getPassword()));
+        if (loginUsernameEntry.getText().length() > 0 && String.valueOf(loginPasswordEntry.getPassword()).length() > 0){
+
+            regPinConfirmEntry.requestFocus();
+
+        } else {
+            regEmailEntry.requestFocus();
+        }
+
+        refreshFrame();
+    } // login to register
+
+    private void regCreateButtonClicked() {
+        String email = regEmailEntry.getText();
+        String name = regFullNameEntry.getText();
+        String pin = String.valueOf(regPinEntry.getPassword());
+        String confirmPin = String.valueOf(regPinConfirmEntry.getPassword());
+        String address = regAddressEntry.getText();
+        String phone = regPhoneEntry.getText();
+
+        if (!checkAllEntries(email, pin, confirmPin, phone)) {
+            return;
+        }
+
+        bankHandler.registerUser(email, pin, name, address, phone);
+    } //register
+
+    private boolean validateEmail(String email) {
+        return email.matches("[a-zA-Z1-9!@#$%^&*()-]*@[a-zA-Z]*(.com|.org|.net)");
+    } //register validation
+
+    private boolean validatePIN(String pin, String confirmPin) {
+        return pin.matches("[0-9]{4}") &&
+                confirmPin.matches("[0-9]{4}") &&
+                pin.length() == 4 &&
+                confirmPin.length() == 4 &&
+                pin.equals(confirmPin);
+    } //register validation
+
+    private boolean validatePhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("[0-9]{3}-[0-9]{3}-[0-9]{4}");
+    } // register validation
 
     private boolean checkAllEntries(String email, String pin, String confirmPin, String phoneNumber) {
+
+        if (email.isBlank() || pin.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Entries cannot be empty.");
+            return false;
+        }
+
+        if (!validateEmail(email)) {
+            JOptionPane.showMessageDialog(null, "Invalid email format.");
+            return false;
+        }
 
         if (!validateEmail(email)) {
             JOptionPane.showMessageDialog(null, "Email in incorrect format.");
@@ -594,5 +594,15 @@ public class BankGUI implements ActionListener {
         }
 
         return true;
+    } // register validation
+
+
+    //Methods that need fixing/tuning
+    private boolean validateName(String name) {     //Regex needs work
+        return name.matches("[a-zA-Z]");
+    }
+
+    private boolean validateAddress(String address) { //Regex needs work
+        return address.matches("[0-9a-zA-Z. ]");
     }
 }

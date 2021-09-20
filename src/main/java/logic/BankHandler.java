@@ -59,7 +59,7 @@ public class BankHandler {
                                                 "WHERE bankDB.bankInfo.client_id = bankDB.loginInfo.client_id AND " +
                                                 "bankDB.bankInfo.email = '" + email + "';" );
             myResults.next();
-            int checkingAmount = (int) Double.parseDouble(myResults.getString("checkingAccount"));
+            int checkingAmount = myResults.getInt("checkingAccount");
 
             myStmt.close();
             myResults.close();
@@ -77,8 +77,9 @@ public class BankHandler {
                     "JOIN bankDB.loginInfo " +
                     "WHERE bankDB.bankInfo.client_id = bankDB.loginInfo.client_id AND " +
                     "bankDB.bankInfo.email = '" + email + "';" );
+
             myResults.next();
-            int savingsAmount = Integer.parseInt(myResults.getString("savingsAccount"));
+            int savingsAmount = myResults.getInt("savingsAccount");
 
 
             myStmt.close();
@@ -228,10 +229,9 @@ public class BankHandler {
         }
     }
 
-    public void registerUser(String email, String pin) {
+    public void registerUser(String email, String pin, String name, String address, String phoneNumber) {
 
         try {
-            System.out.println("First");
             myStmt = myConn.createStatement();
             myResults = myStmt.executeQuery( " SELECT COUNT(*) " +
                                                  " FROM loginInfo " +
@@ -242,7 +242,7 @@ public class BankHandler {
             String exists = myResults.getString("COUNT(*)");
             if (!exists.equals("0")) {
                 JOptionPane.showMessageDialog(null, "Username already exists." +
-                                                                            " Please use a different user.");
+                                                                            " Please use a different email.");
                 closeStatementResultSet();
                 return;
             }
@@ -255,7 +255,9 @@ public class BankHandler {
             closeStatementResultSet();
             myStmt = myConn.createStatement();
             myStmt.executeUpdate(" INSERT INTO bankInfo " +
-                                     " VALUES ( NULL, '" + email + "', NULL, NULL, NULL, NULL, NULL);");
+                                     " VALUES ( NULL, '"  + email + "', '" + name
+                                                + "', '" + address + "', " + phoneNumber +
+                                                ",NULL, NULL);");
 
             closeStatementResultSet();
             JOptionPane.showMessageDialog(null, "User has been registered.");
