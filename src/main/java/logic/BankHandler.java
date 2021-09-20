@@ -256,8 +256,8 @@ public class BankHandler {
             myStmt = myConn.createStatement();
             myStmt.executeUpdate(" INSERT INTO bankInfo " +
                                      " VALUES ( NULL, '"  + email + "', '" + name
-                                                + "', '" + address + "', " + phoneNumber +
-                                                ",NULL, NULL);");
+                                                + "', '" + address + "', '" + phoneNumber +
+                                                "', NULL, NULL);");
 
             closeStatementResultSet();
             JOptionPane.showMessageDialog(null, "User has been registered.");

@@ -10,7 +10,5 @@ public class App {
 
         //To-Do-List
         // -Add database file template to Github
-
-        //Self note - Fix the sending of the phone number to the database
     }
 }
