@@ -15,7 +15,10 @@ public class BankHandler {
             JOptionPane.showMessageDialog(null, "Connected successfully");
 
         } catch (Exception exc) {
+            JOptionPane.showMessageDialog(null, "Problem connecting to server," +
+                                                                        " check the directory, user, and password");
             exc.printStackTrace();
+            System.exit(0);
         }
     }
 

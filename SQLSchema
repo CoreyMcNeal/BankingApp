@@ -1,0 +1,19 @@
+USE bankDB;
+
+CREATE TABLE `bankInfoTest` (
+  `client_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL,
+  `name` text,
+  `address` text,
+  `phone` varchar(13) DEFAULT NULL,
+  `checkingAccount` int DEFAULT '0',
+  `savingsAccount` int DEFAULT '0',
+  PRIMARY KEY (`client_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `loginInfoTest` (
+  `client_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(50) NOT NULL,
+  `pin_number` int NOT NULL,
+  PRIMARY KEY (`client_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
