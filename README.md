@@ -1,11 +1,13 @@
 # BankingApp
 Bank ATM Application with full GUI (Swing). The application connects to and communicates with a local SQL database (set up using MySQLWorkbench), allowing non volatile storage, and manipulation of account balances. 
 
-The User must set up a local database using MySQL. To run the application, the user must provide the database directory (commonly "jdbc:mysql://localhost:3306/DatabaseNameHere"), database username, and database password as parameters when asked by the dialogue boxes.
+The User must set up a local database using MySQL.
 
 **Please make sure the database is called bankDB, as that is what the schema is expecting to use to create the tables needed.**
 
 The SQL Schema needed to make the tables in the SQL database is provided in the files, labeled "SQLSchema". This will make sure the database being written to is formatted correctly for queries and updates from the program.
+
+Add the SQL jar file to the build path of the application. It is located in the resources folder.
 
 # How to Run
   - Run "App.java" from within an IDE with Maven support (Such as IntelliJ, Netbeans, or Eclipse)
